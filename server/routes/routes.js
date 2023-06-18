@@ -12,7 +12,7 @@ router.get("/", (req, res) => {
 });
 
 // 1 HLD
-router.get("/api/v1/allproblems", (req, res) => {
+router.get("/api/v1/problems", (req, res) => {
   console.log("All Problems Route");
   res.send("All Problems Route");
 });
@@ -45,3 +45,5 @@ router.put("/api/v1/problem/:id", (req, res) => {
   console.log("Problem Route");
   res.send("Problem Route for admin to update a existing  problem");
 });
+
+export default router;

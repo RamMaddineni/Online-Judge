@@ -134,3 +134,7 @@ Development FLow :
 5. Then i will create a UI for all questions page.
 6. Then i will create a UI for particular question page.
 7. Then i will create a UI for code editor(includes submit file option) page.
+
+8. after frontend completion , i will start working on backend functionality on individual routes.
+
+9. after backend completion , i will start working on testing and debugging.
