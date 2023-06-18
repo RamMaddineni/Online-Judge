@@ -83,14 +83,54 @@ Assuming user is already logged in Currently.
    2.3.8 send this whole doc to UI/frontend .
    2.3.9 Verdict will be display on UI.
 
+Time needed:
+
 frontend-compononets :
 
-1.Login and signUp Page.
+0. React Routing setup for all components : 1 day.
+
+1.Login and signUp Page :
+design : 6 hrs.
+code : 2-3 hrs.
 
 2. User-Profile component.
+   design : 1 hr.
+   code : 2-3 hrs
 
 3. All-Questions Component.
+   design : 1 day (from various already there components).
+   code : 1 day.
 
 4. Particular question Component.
+   design : 1 day.
+   code : 1 day.
 
 5. Code Editor Component.
+   design : 1-2 hrs
+   code : 1-2 hrs.
+
+Server-Side :
+
+1. mongodb database creation : 1 day. considering to check the validity of data into database.
+2. API End point Routes BASE STRUCTURE : 1 day.
+3. Implementing functionality for apprioriate routes : 1 week
+   3.1 user login , signup, logout ,profile : 2-3 days .
+   3.2 Functionality to get all problems : 2-3 hrs.
+   3.3 Functionality to get a particular problem : 2-3 hrs.
+   3.4 Functionality to submit ,verify and produce a verdict for a code file using compilers provided by packaged: 2-3 days.
+   3.5 writing functionality for admin routes : 1 day.
+
+4. Testing and debugging : 1 week.
+
+Development Time : 3 weeks.
+
+Development FLow :
+
+1. First i will create a basic react app with routing and basic components.
+2. Then i will create a basic server with routes and database wihtout any functionality.
+
+3. Now i will create a UI for login and signup page.
+4. Then i will create a UI for user profile page.
+5. Then i will create a UI for all questions page.
+6. Then i will create a UI for particular question page.
+7. Then i will create a UI for code editor(includes submit file option) page.
