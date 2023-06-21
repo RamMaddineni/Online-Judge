@@ -1,0 +1,9 @@
+1. google auth
+  -> cors error 
+     tried : setting headers in server.js , ACCESS-ALLOW_ORIGIN : http://localhost:3000 , 
+     result : failed.
+  -> frontend google auth components that can be used by react .
+     failed , same cors error.
+  ->referred a youtube video:
+     git repo outdated , packages outdated , tried to update , failed.
+

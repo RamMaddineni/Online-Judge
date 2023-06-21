@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-import bcrypt from "bcryptjs";
+// import bcrypt from "bcryptjs";
 const userSchema = new mongoose.Schema({
   name: String,
 
@@ -9,15 +9,20 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   }, // hashed
+  email: {
+    type: String,
+    required: true,
+  },
   isAdmin: Boolean,
   questionsSolved: {
     type: Number,
     default: 0,
   },
+  isGoogle: {
+    type: Boolean,
+  },
 });
 
 const User = mongoose.model("User", userSchema);
 
-User.pre("save", function (next) {
-  //
-});
+export default User;
