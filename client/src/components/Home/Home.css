@@ -54,15 +54,15 @@
     box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.05);
 } */
 
-.Home-Right h1 {
+.Home-Right h2,
+h1 {
     text-align: center;
-    padding: 20px 0;
+    padding: 10px 0;
     border-bottom: 1px solid silver;
 }
 
 .Home-Right form {
     padding: 0 40px;
-    box-sizing: border-box;
 }
 
 form .Home-txt_field {
@@ -150,10 +150,11 @@ form .Home-txt_field {
 }
 
 .Home-signup_link p {
-    color: white;
+    color: #2691d9;
     text-decoration: underline;
 }
 
 .Home-signup_link p:hover {
     text-decoration: none;
+    cursor: pointer;
 }

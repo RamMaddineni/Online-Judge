@@ -13,7 +13,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  isAdmin: Boolean,
+  isAdmin: { type: Boolean, default: false },
   questionsSolved: {
     type: Number,
     default: 0,

@@ -1,38 +1,9 @@
 import express from "express";
 const router = express.Router();
-// const passport = require("passport");
-import passport from "passport";
 
-import googleSignIn from "../controllers/googleOauth/passportConfig.js";
 import jwt from "jsonwebtoken";
 import User from "../models/userSchema.js";
-
-googleSignIn(passport);
-
-router.get(
-  "/api/v1/auth/google/callback",
-  passport.authenticate("google", { session: false }),
-  (req, res) => {
-    jwt.sign(
-      { user: req.user },
-      process.env.JWT_SECRET,
-      { expiresIn: "1d" },
-      (err, token) => {
-        if (err) {
-          console.log(err);
-          res
-            .status(500)
-            .json({ message: "Internal Server Error", token: null });
-        }
-        res
-          .status(200)
-          .redirect("http://localhost:3000/problems")
-          .json({ message: "Success", token });
-      }
-    );
-  }
-);
-
+import register from "../controllers/auth/register.js";
 // Routes
 // user should be login to access these routes.
 // i will handle login later.
@@ -44,12 +15,8 @@ router.get("/", async (req, res) => {
 });
 
 //auth routes
-router.post("/api/v1/register", (req, res) => {
-  console.log("Register Route");
-
-  res.send({ success: true, message: "User Registered Successfully" });
-});
-router.post("/api/v1/login", (req, res) => {
+router.post("/api/v1/auth/register", register);
+router.post("/api/v1/auth/login", (req, res) => {
   console.log("Login Route");
   res.send({ success: true, message: "User Logged in Successfully" });
 });

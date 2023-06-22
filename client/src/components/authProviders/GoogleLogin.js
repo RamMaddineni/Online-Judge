@@ -2,6 +2,7 @@ import React from "react";
 import { useEffect } from "react";
 import jwt_decode from "jwt-decode";
 function GoogleLogin() {
+  const google = window.google;
   const handleCallbackResponse = (response) => {
     console.log("Encode Jwt : ", response.credential);
     let userObject = jwt_decode(response.credential);
@@ -13,7 +14,7 @@ function GoogleLogin() {
   };
   useEffect(() => {
     /* global google */
-    google.accounts.id.initialize({
+    google?.accounts.id.initialize({
       client_id:
         "495337380519-ji1hsn7bsmjgjd4lln75lhu5lluq2nv4.apps.googleusercontent.com",
       callback: handleCallbackResponse,
