@@ -34,11 +34,6 @@ const Home = ({ user, setUser }) => {
   };
   return (
     <div className="Home">
-      <div className="Home-Left">
-        {/* <h4>Login / SignUp</h4> */}
-        <GoogleLogin />
-        <p>signup or login</p>
-      </div>
       <div className="Home-Right">
         <form method="" onSubmit={(e) => e.preventDefault()}>
           <h2>Login</h2>
@@ -80,6 +75,12 @@ const Home = ({ user, setUser }) => {
               handleLogin(e);
             }}
           />
+          <div className="Home-google-button">
+            <p>
+              login/signUp with <GoogleLogin />{" "}
+            </p>
+          </div>
+
           <div className="Home-signup_link">
             Not a member?{" "}
             <p

@@ -7,28 +7,6 @@
     background-color: rgb(72, 174, 218);
 }
 
-.Home-Left {
-    background-color: #154ba1;
-    color: white;
-
-
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-
-    width: 30%;
-    max-width: 500px;
-    height: 50%;
-    padding: 0 2rem;
-    border-radius: 1rem;
-}
-
-.Home-Left p {
-    font-size: 1rem;
-    margin: 0.5rem 0;
-    color: white;
-    align-self: center;
-}
 
 .Home-Right {
 
@@ -39,9 +17,10 @@
     justify-content: baseline;
     width: 30%;
     max-width: 500px;
-    height: 50%;
     padding: 0 2rem;
     border-radius: 1rem;
+    max-width: fit-content;
+    min-height: fit-content;
 }
 
 /* .Home-Right {
@@ -142,6 +121,14 @@ form .Home-txt_field {
 .Home-form-submit-input:hover {
     border-color: #2691d9;
     transition: .5s;
+}
+
+.Home-google-button {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
 }
 
 .Home-signup_link {
