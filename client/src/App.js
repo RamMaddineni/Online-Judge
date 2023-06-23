@@ -7,15 +7,14 @@ import {
 } from "react-router-dom";
 // import Login from "./components/login/Login";
 import "./App.css";
+import CodeEditor from "./components/CodeEditor/CodeEditor";
 import SignUp from "./components/signup/SignUp";
 import Home from "./components/Home/Home";
 import Profile from "./components/profile/Profile";
-import { useCookies } from "react-cookie";
 
 function App() {
   const [user, setUser] = useState();
-  // const [cookies] = useCookies(["token"]);
-  // const isLoggedIn = !!cookies.token;
+
   useEffect(() => {
     setUser(JSON.parse(localStorage.getItem("user")));
   }, []);
@@ -37,7 +36,10 @@ function App() {
             element={<Profile user={user} setUser={setUser} />}
           ></Route>
         )}
-        {console.log(user) && user && (
+        {user && (
+          <Route path="/compiler" element={<CodeEditor>Problems</CodeEditor>} />
+        )}
+        {user && (
           <Route path="/problems" element={<h1 user={user}>Problems</h1>} />
         )}
         {user && (

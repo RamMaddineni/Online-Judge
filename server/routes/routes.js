@@ -8,6 +8,7 @@ import localLogin from "../controllers/auth/localLogin.js";
 import validateJwt from "../middlware/validateJwt.js";
 import profile from "../controllers/Profile/profile.js";
 import googleLogin from "../controllers/auth/googleLogin.js";
+import compiler from "../controllers/compiler/compiler.js";
 // Routes
 // user should be login to access these routes.
 // i will handle login later.
@@ -28,6 +29,7 @@ router.get("/api/v1/logout", (req, res) => {
   res.clearCookie("token");
   res.send("logged out");
 });
+router.post("/api/v1/compiler", validateJwt, compiler);
 
 // 1 HLD
 router.get("/api/v1/problems", validateJwt, (req, res) => {

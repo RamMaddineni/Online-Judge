@@ -14,12 +14,12 @@ const validateJwt = (req, res, next) => {
         .json({ success: false, message: err.message, USER: false });
       return;
     }
-    if (decoded.userId !== req.body.userId) {
-      res
-        .status(401)
-        .json({ success: false, message: "Invalid User", USER: false });
-      return;
-    }
+    // if (decoded.userId !== req.body.userId) {
+    //   res
+    //     .status(401)
+    //     .json({ success: false, message: "Invalid User", USER: false });
+    //   return;
+    // }
 
     next();
   });

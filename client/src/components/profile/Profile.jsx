@@ -51,6 +51,15 @@ const Profile = ({ user, setUser }) => {
   return (
     <div className="profile">
       <h2>userId : {profile?.userId || "error"}</h2>
+      <div
+        className="profile-compiler-online"
+        onClick={(e) => {
+          e.preventDefault();
+          navigate("/compiler");
+        }}
+      >
+        Online Compiler
+      </div>
       <div className="profile-logout" onClick={handleLogout}>
         Logout
       </div>
