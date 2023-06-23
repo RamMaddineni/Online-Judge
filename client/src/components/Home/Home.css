@@ -14,7 +14,8 @@
 
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-around;
+
     width: 30%;
     max-width: 500px;
     height: 50%;
@@ -23,10 +24,10 @@
 }
 
 .Home-Left p {
-    font-size: 1.5rem;
+    font-size: 1rem;
     margin: 0.5rem 0;
-    color: #154ba1;
-
+    color: white;
+    align-self: center;
 }
 
 .Home-Right {
@@ -135,6 +136,7 @@ form .Home-txt_field {
     font-weight: 700;
     cursor: pointer;
     outline: none;
+    text-align: center;
 }
 
 .Home-form-submit-input:hover {

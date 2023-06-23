@@ -1,25 +1,30 @@
 import axios from "axios";
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import jwt from "jwt-decode";
 import "./SignUp.css";
 
-function SignUp({ user, setUser, token, setToken }) {
+function SignUp({ user }) {
   const [userId, setUserId] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
+
   const handleRegister = async (e) => {
     e.preventDefault();
+    if (!userId || !email || !password || !confirmPassword) {
+      setErrorMessage("Fill All fields");
+      return;
+    }
     if (password !== confirmPassword) {
-      setErrorMessage("Passwords do not match dumb fuck! 🚺");
+      setErrorMessage("Passwords do not match!");
       return;
     }
     if (password.length < 4) {
-      setErrorMessage("Password length should be atleast 4 characters bitch!");
+      setErrorMessage("Password length should be atleast 4 characters .");
     }
     try {
       const response = await axios.post(
@@ -30,23 +35,16 @@ function SignUp({ user, setUser, token, setToken }) {
           password,
         }
       );
+      console.log(response.data);
       if (response.data.success) {
-        token = response.data.token;
-        console.log("token : ", token);
-        const { userId, email } = jwt(token);
-        setUser({ userId: userId, email: email });
-        setToken(token);
-        navigate("/profile");
+        navigate("/");
       } else if (!response.data) {
         setErrorMessage(`try once again!`);
-      } else if (!response.data.duplicate && response.data.item === "email") {
-        setErrorMessage(`${email} was already registered`);
-      } else if (!response.data.duplicate && response.data.item === "userId") {
-        setErrorMessage(`${userId} has taken 😓, try another!`);
       }
     } catch (err) {
       console.log(err);
-      setErrorMessage(err.message);
+
+      setErrorMessage(err?.response?.data?.message);
     }
   };
 
@@ -63,13 +61,13 @@ function SignUp({ user, setUser, token, setToken }) {
           <div className="SignUp-txt_field">
             <input
               type="text"
-              required
               value={userId}
               id="userId"
               onChange={(e) => {
                 setUserId(e.target.value);
                 setErrorMessage("");
               }}
+              required
             />
             <span></span>
             <label>User ID</label>
@@ -116,6 +114,7 @@ function SignUp({ user, setUser, token, setToken }) {
           </div>
           <input
             className="SignUp-form-submit-input"
+            type="submit"
             value="Register"
             onClick={(e) => {
               handleRegister(e);

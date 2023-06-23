@@ -11,76 +11,45 @@ import SignUp from "./components/signup/SignUp";
 import Home from "./components/Home/Home";
 
 function App() {
-  const [token, setToken] = useState("");
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState();
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Home />}></Route>
+        {!user && (
+          <Route
+            path="/"
+            element={<Home user={user} setUser={setUser} />}
+          ></Route>
+        )}
         {/* <Route path="/" element={<Login />}></Route> */}
-        <Route
-          path="/register"
-          element={
-            <SignUp
-              token={token}
-              setToken={setToken}
-              user={user}
-              setUser={setUser}
-            />
-          }
-        ></Route>
-        {Object.keys(user).length && (
+        {!user && (
+          <Route path="/register" element={<SignUp user={user} />}></Route>
+        )}
+        {user && (
           <Route path="/profile" element={<h1>Profile section</h1>}></Route>
         )}
-        {Object.keys(user).length && (
-          <Route
-            path="/problems"
-            element={
-              <h1 token={token} user={user}>
-                Problems
-              </h1>
-            }
-          />
+        {user && (
+          <Route path="/problems" element={<h1 user={user}>Problems</h1>} />
         )}
-        {Object.keys(user).length && (
-          <Route
-            path="/problem/:id"
-            element={
-              <h1 token={token} user={user}>
-                Problem
-              </h1>
-            }
-          />
+        {user && (
+          <Route path="/problem/:id" element={<h1 user={user}>Problem</h1>} />
         )}
-        {Object.keys(user).length && (
-          <Route
-            path="/admin"
-            element={
-              <h1 token={token} user={user}>
-                Admin
-              </h1>
-            }
-          />
-        )}
-        {Object.keys(user).length && (
+        {/* Optional below */}
+        {user && <Route path="/admin" element={<h1 user={user}>Admin</h1>} />}
+        {user && (
           <Route
             path="/admin/addproblem"
-            element={
-              <h1 token={token} user={user}>
-                Admin Problem
-              </h1>
-            }
+            element={<h1 user={user}>Admin Problem</h1>}
           />
         )}
-        {Object.keys(user).length && (
+        {user && (
           <Route
             path="/admin/editproblem/:id"
-            element={
-              <h1 token={token} user={user}>
-                Admin Problem
-              </h1>
-            }
+            element={<h1 user={user}>Admin Problem</h1>}
           />
+        )}
+        {user && (
+          <Route path="*" element={<Navigate to="/profile"></Navigate>}></Route>
         )}
         <Route path="*" element={<Navigate to="/"></Navigate>}></Route>
       </Routes>

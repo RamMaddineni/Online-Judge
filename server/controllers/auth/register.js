@@ -10,16 +10,22 @@ const register = async (req, res) => {
     let doc = await User.find({ userId: userId });
     console.log("doc : ", doc);
     if (doc.length) {
-      res
-        .status(409)
-        .json({ success: false, duplicate: true, duplicateItem: "userId" });
+      res.status(309).json({
+        success: false,
+        duplicate: true,
+        duplicateItem: "userId",
+        message: `${userId} has taken 😓, try another!`,
+      });
       return;
     }
     doc = await User.find({ email: email });
     if (doc.length) {
-      res
-        .status(409)
-        .json({ success: false, duplicate: true, duplicateItem: "email" });
+      res.status(309).json({
+        success: false,
+        duplicate: true,
+        duplicateItem: "email",
+        message: `${email} was already registered`,
+      });
       return;
     }
     let user = new User({
@@ -28,10 +34,8 @@ const register = async (req, res) => {
       password: password,
     });
     await user.save();
-    user = { userId: user.userId, email: user.email };
-    console.log(user);
-    const token = jwt.sign(user, process.env.JWT_SECRET, { expiresIn: "30s" });
-    res.json({ message: "success", success: true, token: token });
+
+    res.json({ message: "success", success: true });
   } catch (err) {
     console.log(err);
     console.log(err.message);

@@ -21,6 +21,7 @@ const userSchema = new mongoose.Schema({
   isGoogle: {
     type: Boolean,
   },
+  tokenId: String,
 });
 
 const User = mongoose.model("User", userSchema);
