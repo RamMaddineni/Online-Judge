@@ -16,10 +16,11 @@
     flex-direction: column;
     justify-content: baseline;
     width: 30%;
-    max-width: 500px;
+
     padding: 0 2rem;
     border-radius: 1rem;
     max-width: fit-content;
+    min-width: fit-content;
     min-height: fit-content;
 }
 

@@ -1,29 +1,59 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-const Profile = () => {
+const Profile = ({ user, setUser }) => {
+  console.log("user", user);
+  const [profile, setProfile] = useState();
+  const [errorMessage, setErrorMessage] = useState();
+
+  const navigate = useNavigate();
   useEffect(() => {
+    console.log("user line 12", user);
     const getUser = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:3001/api/v1/profile",
+        console.log(user.userId, user.email);
+        const response = await axios.post(
+          `http://localhost:3001/api/v1/profile`,
           {
-            token: localStorage.token,
+            userId: user.userId,
+            email: user.email,
+          },
+          {
+            withCredentials: true,
           }
         );
 
-        const parseRes = await response.json();
-        console.log(parseRes);
-        setUser(parseRes);
-      } catch (err) {
-        console.error(err.message);
+        setProfile(response.data?.profile);
+      } catch (error) {
+        if (error.response.USER === false) {
+          navigate("/");
+        }
+        setErrorMessage(error?.response?.data?.message || error.message);
       }
     };
+
     getUser();
   }, []);
+  const handleLogout = async () => {
+    try {
+      await axios.get(`http://localhost:3001/api/v1/logout`, {
+        withCredentials: true,
+      });
+      setUser("");
+      localStorage.removeItem("user");
+      navigate("/");
+    } catch (error) {
+      setErrorMessage(error?.response?.data?.message || error.message);
+      navigate("/");
+    }
+  };
   return (
-    <div>
-      <h1>hi ${user.name}</h1>
-      <h2>userId : ${user.Id}</h2>
+    <div className="profile">
+      <h2>userId : {profile?.userId || "error"}</h2>
+      <div className="profile-logout" onClick={handleLogout}>
+        Logout
+      </div>
     </div>
   );
 };

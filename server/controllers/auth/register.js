@@ -3,12 +3,9 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 dotenv.config();
 const register = async (req, res) => {
-  console.log("got here");
   const { userId, email, password } = req.body;
-  console.log(userId, email, password);
   try {
     let doc = await User.find({ userId: userId });
-    console.log("doc : ", doc);
     if (doc.length) {
       res.status(309).json({
         success: false,
@@ -37,7 +34,6 @@ const register = async (req, res) => {
 
     res.json({ message: "success", success: true });
   } catch (err) {
-    console.log(err);
     console.log(err.message);
     res
       .status(401)

@@ -6,6 +6,8 @@ import User from "../models/userSchema.js";
 import register from "../controllers/auth/register.js";
 import localLogin from "../controllers/auth/localLogin.js";
 import validateJwt from "../middlware/validateJwt.js";
+import profile from "../controllers/Profile/profile.js";
+import googleLogin from "../controllers/auth/googleLogin.js";
 // Routes
 // user should be login to access these routes.
 // i will handle login later.
@@ -19,9 +21,16 @@ router.get("/", async (req, res) => {
 //auth routes
 router.post("/api/v1/auth/register", register);
 router.post("/api/v1/auth/local/login", localLogin);
+router.post("/api/v1/auth/google/login", googleLogin);
+
+router.post("/api/v1/profile", validateJwt, profile);
+router.get("/api/v1/logout", (req, res) => {
+  res.clearCookie("token");
+  res.send("logged out");
+});
 
 // 1 HLD
-router.post("/api/v1/problems", validateJwt, (req, res) => {
+router.get("/api/v1/problems", validateJwt, (req, res) => {
   console.log("All Problems Route");
   res.send("All Problems Route");
 });

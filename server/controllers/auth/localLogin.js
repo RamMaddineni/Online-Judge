@@ -18,8 +18,19 @@ const localLogin = async (req, res) => {
         process.env.JWT_SECRET,
         { expiresIn: "1d" }
       );
-      res.cookie("token", token, { httpOnly: true });
-      res.json({ success: true, message: "Login Successful" });
+      const cookieOptions = {
+        domain: "localhost",
+        path: "/",
+        secure: true,
+        httpOnly: true,
+      };
+      res.cookie("token", token, cookieOptions);
+      res.json({
+        success: true,
+        message: "Login Successful",
+        userId: userId,
+        email: user[0].email,
+      });
       return;
     } else {
       res.status(401).json({
@@ -27,7 +38,6 @@ const localLogin = async (req, res) => {
         message: "Wrong Credentials",
         user,
         userId,
-        password,
       });
     }
   } catch (err) {

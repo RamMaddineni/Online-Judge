@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   BrowserRouter as Router,
   Route,
@@ -9,9 +9,16 @@ import {
 import "./App.css";
 import SignUp from "./components/signup/SignUp";
 import Home from "./components/Home/Home";
+import Profile from "./components/profile/Profile";
+import { useCookies } from "react-cookie";
 
 function App() {
   const [user, setUser] = useState();
+  // const [cookies] = useCookies(["token"]);
+  // const isLoggedIn = !!cookies.token;
+  useEffect(() => {
+    setUser(JSON.parse(localStorage.getItem("user")));
+  }, []);
   return (
     <Router>
       <Routes>
@@ -21,14 +28,16 @@ function App() {
             element={<Home user={user} setUser={setUser} />}
           ></Route>
         )}
-        {/* <Route path="/" element={<Login />}></Route> */}
         {!user && (
           <Route path="/register" element={<SignUp user={user} />}></Route>
         )}
         {user && (
-          <Route path="/profile" element={<h1>Profile section</h1>}></Route>
+          <Route
+            path="/profile"
+            element={<Profile user={user} setUser={setUser} />}
+          ></Route>
         )}
-        {user && (
+        {console.log(user) && user && (
           <Route path="/problems" element={<h1 user={user}>Problems</h1>} />
         )}
         {user && (

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import GoogleLogin from "../authProviders/GoogleLogin";
 import "./Home.css";
 import { useNavigate } from "react-router-dom";
@@ -8,7 +8,7 @@ const Home = ({ user, setUser }) => {
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
-
+  useEffect(() => {}, []);
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
@@ -17,18 +17,24 @@ const Home = ({ user, setUser }) => {
         {
           userId,
           password,
+        },
+        {
+          withCredentials: true,
         }
       );
       if (response.data.success) {
         const { userId, email } = response.data;
         setUser({ userId: userId, email: email });
-        console.log("came here");
+        localStorage.setItem(
+          "user",
+          JSON.stringify({ userId: userId, email: email })
+        );
+
         navigate("/profile");
         return;
       }
       setErrorMessage("Try Again !");
     } catch (err) {
-      console.log(err.message);
       setErrorMessage(err?.response?.data?.message);
     }
   };
@@ -48,6 +54,7 @@ const Home = ({ user, setUser }) => {
               value={userId}
               onChange={(e) => {
                 setUserId(e.target.value);
+                setErrorMessage("");
               }}
               required
             />
@@ -61,6 +68,7 @@ const Home = ({ user, setUser }) => {
               value={password}
               onChange={(e) => {
                 setPassword(e.target.value);
+                setErrorMessage("");
               }}
             />
             <span></span>
@@ -76,9 +84,15 @@ const Home = ({ user, setUser }) => {
             }}
           />
           <div className="Home-google-button">
-            <p>
-              login/signUp with <GoogleLogin />{" "}
-            </p>
+            <div>
+              login/signUp with{" "}
+              <GoogleLogin
+                user={user}
+                setUser={setUser}
+                errorMessage={errorMessage}
+                setErrorMessage={setErrorMessage}
+              />{" "}
+            </div>
           </div>
 
           <div className="Home-signup_link">
