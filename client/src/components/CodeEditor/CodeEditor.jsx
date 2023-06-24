@@ -61,7 +61,6 @@ function CodeEditor() {
         <button onClick={handleClearClick}>Clear</button>
       </div>
       <div className="code-editor-textarea">
-        {/* Add line numbers using CSS */}
         <textarea
           ref={textareaRef}
           value={code}
