@@ -2,7 +2,8 @@ import User from "../../models/userSchema.js";
 
 const profile = async (req, res) => {
   try {
-    const user = await User.find({ userId: req.body.userId });
+    const user = await User.find({ email: req.body.email });
+
     if (user.length) {
       res
         .status(200)

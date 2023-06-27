@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 const userSchema = new mongoose.Schema({
   name: String,
 
-  userId: { type: String, required: true, unique: true }, // unique
+  name: { type: String, required: true }, // unique
   password: {
     type: String,
     required: true,

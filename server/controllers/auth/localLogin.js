@@ -4,17 +4,17 @@ import { v4 as uuidv4 } from "uuid";
 import jwt from "jsonwebtoken";
 dotenv.config();
 const localLogin = async (req, res) => {
-  const { userId, password } = req.body;
-  console.log(userId, password);
+  const { email, password } = req.body;
+  // console.log(email, password);
   try {
-    const user = await User.find({ userId: userId });
+    const user = await User.find({ email: email });
 
-    console.log(user, user.length, user[0].password, password);
+    // console.log(user, user.length, user[0].password, password);
     if (user.length && user[0].password === password) {
-      console.log("came here");
+      // console.log("came here");
       const tokenId = uuidv4();
       const token = jwt.sign(
-        { userId, email: user.email, tokenId: tokenId },
+        { email: user.email, tokenId: tokenId },
         process.env.JWT_SECRET,
         { expiresIn: "1d" }
       );
@@ -28,7 +28,6 @@ const localLogin = async (req, res) => {
       res.json({
         success: true,
         message: "Login Successful",
-        userId: userId,
         email: user[0].email,
       });
       return;
@@ -36,8 +35,6 @@ const localLogin = async (req, res) => {
       res.status(401).json({
         success: false,
         message: "Wrong Credentials",
-        user,
-        userId,
       });
     }
   } catch (err) {

@@ -3,10 +3,13 @@ import Prism from "prismjs";
 import "prismjs/themes/prism.css";
 import "./CodeEditor.css";
 import axios from "axios";
+import { set } from "lodash";
 function CodeEditor() {
   const [code, setCode] = useState("");
   const [language, setLanguage] = useState("javascript");
+  const [input, setInput] = useState("");
   const textareaRef = useRef(null);
+  const inputRef = useRef(null);
   const [output, setOutput] = useState("");
   function handleCodeChange(event) {
     setCode(event.target.value);
@@ -25,6 +28,7 @@ function CodeEditor() {
         {
           code: code,
           language: language,
+          input: input,
         },
         { withCredentials: true }
       );
@@ -38,10 +42,16 @@ function CodeEditor() {
 
   function handleClearClick() {
     // Add code here to clear the console
+    setCode("");
+    setOutput("");
+    setInput("");
   }
 
   useEffect(() => {
     if (textareaRef.current) {
+      Prism.highlightElement(textareaRef.current);
+    }
+    if (inputRef.current) {
       Prism.highlightElement(textareaRef.current);
     }
   }, [code, language]);
@@ -50,11 +60,11 @@ function CodeEditor() {
     <div className="code-editor">
       <div className="code-editor-header">
         <select value={language} onChange={handleLanguageChange}>
-          <option value="cpp">C</option>
-          <option value="c">Cpp</option>
-          <option value="javascript">JavaScript</option>
-          <option value="python">Python</option>
-          <option value="ruby">Ruby</option>
+          <option value="cpp">cpp</option>
+          <option value="c">c</option>
+          <option value="java">Java</option>
+          <option value="js">JavaScript</option>
+          <option value="py">Python</option>
           {/* Add more options as needed */}
         </select>
         <button onClick={handleRunClick}>Run</button>
@@ -69,8 +79,17 @@ function CodeEditor() {
           rows={20}
           cols={40}
         />
+        <textarea
+          ref={inputRef}
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          className={`input-${language}`}
+          rows={20}
+          cols={40}
+        />
+        <label htmlFor="">Input</label>
       </div>
-      <div className="code-editor-output">{output}</div>
+      <div className="code-editor-output">{!output?.code && output}</div>
     </div>
   );
 }

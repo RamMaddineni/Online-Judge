@@ -6,7 +6,7 @@ import jwt from "jwt-decode";
 import "./SignUp.css";
 
 function SignUp({ user }) {
-  const [userId, setUserId] = useState("");
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -15,7 +15,7 @@ function SignUp({ user }) {
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    if (!userId || !email || !password || !confirmPassword) {
+    if (!name || !email || !password || !confirmPassword) {
       setErrorMessage("Fill All fields");
       return;
     }
@@ -30,7 +30,7 @@ function SignUp({ user }) {
       const response = await axios.post(
         "http://localhost:3001/api/v1/auth/register",
         {
-          userId,
+          name,
           email,
           password,
         }
@@ -61,16 +61,16 @@ function SignUp({ user }) {
           <div className="SignUp-txt_field">
             <input
               type="text"
-              value={userId}
+              value={name}
               id="userId"
               onChange={(e) => {
-                setUserId(e.target.value);
+                setName(e.target.value);
                 setErrorMessage("");
               }}
               required
             />
             <span></span>
-            <label>User ID</label>
+            <label>name</label>
           </div>
 
           <div className="SignUp-txt_field">

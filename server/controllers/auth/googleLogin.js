@@ -4,11 +4,11 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 dotenv.config();
 const googleLogin = async (req, res) => {
-  const { userId, email, password } = req.body;
+  const { name, email, password } = req.body;
   try {
     const tokenId = uuidv4();
     const token = jwt.sign(
-      { userId, email: email, tokenId: tokenId },
+      { name, email: email, tokenId: tokenId },
       process.env.JWT_SECRET,
       { expiresIn: "1d" }
     );
@@ -21,13 +21,13 @@ const googleLogin = async (req, res) => {
     };
     res.cookie("token", token, cookieOptions);
 
-    let doc = await User.find({ userId: userId });
+    let doc = await User.find({ email: email });
     if (doc.length) {
       res.json({ message: "success", success: true });
       return;
     }
     let user = new User({
-      userId: userId,
+      name: name,
       email: email,
       password: password,
     });

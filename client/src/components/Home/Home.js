@@ -4,7 +4,7 @@ import "./Home.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 const Home = ({ user, setUser }) => {
-  const [userId, setUserId] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
@@ -15,7 +15,7 @@ const Home = ({ user, setUser }) => {
       const response = await axios.post(
         "http://localhost:3001/api/v1/auth/local/login",
         {
-          userId,
+          email,
           password,
         },
         {
@@ -23,12 +23,9 @@ const Home = ({ user, setUser }) => {
         }
       );
       if (response.data.success) {
-        const { userId, email } = response.data;
-        setUser({ userId: userId, email: email });
-        localStorage.setItem(
-          "user",
-          JSON.stringify({ userId: userId, email: email })
-        );
+        const { email } = response.data;
+        setUser({ email: email });
+        localStorage.setItem("user", JSON.stringify({ email: email }));
 
         navigate("/profile");
         return;
@@ -51,15 +48,15 @@ const Home = ({ user, setUser }) => {
           <div className="Home-txt_field">
             <input
               type="text"
-              value={userId}
+              value={email}
               onChange={(e) => {
-                setUserId(e.target.value);
+                setEmail(e.target.value);
                 setErrorMessage("");
               }}
               required
             />
             <span></span>
-            <label>User ID</label>
+            <label>email</label>
           </div>
           <div className="Home-txt_field">
             <input

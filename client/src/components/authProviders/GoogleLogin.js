@@ -11,7 +11,6 @@ function GoogleLogin({ user, setUser, errorMessage, setErrorMessage }) {
     let userObject = jwt_decode(response.credential);
     console.log("Decode Jwt : ", userObject);
     const _user = {
-      userId: userObject.email,
       email: userObject.email,
     };
 
@@ -19,7 +18,7 @@ function GoogleLogin({ user, setUser, errorMessage, setErrorMessage }) {
       const response = await axios.post(
         "http://localhost:3001/api/v1/auth/google/login",
         {
-          userId: userObject.email,
+          name: userObject.name,
           email: userObject.email,
           password: userObject.sub,
         },
@@ -42,8 +41,8 @@ function GoogleLogin({ user, setUser, errorMessage, setErrorMessage }) {
     }
   };
   useEffect(() => {
-    const google = window.google;
     /* global google */
+    const google = window.google;
     google?.accounts?.id.initialize({
       client_id:
         "495337380519-ji1hsn7bsmjgjd4lln75lhu5lluq2nv4.apps.googleusercontent.com",

@@ -16,7 +16,6 @@ const Profile = ({ user, setUser }) => {
         const response = await axios.post(
           `http://localhost:3001/api/v1/profile`,
           {
-            userId: user.userId,
             email: user.email,
           },
           {
@@ -50,7 +49,7 @@ const Profile = ({ user, setUser }) => {
   };
   return (
     <div className="profile">
-      <h2>userId : {profile?.userId || "error"}</h2>
+      <h2>email : {profile?.email || "error"}</h2>
       <div
         className="profile-compiler-online"
         onClick={(e) => {

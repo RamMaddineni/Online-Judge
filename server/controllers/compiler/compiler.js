@@ -3,11 +3,12 @@ import executeCode from "../../utils/excecuteCode.js";
 const compiler = async (req, res) => {
   const code = req.body.code;
   const lang = req.body.language;
+  const input = req.body.input;
   console.log("lang", lang);
   const filePath = await generateFile(code, lang);
-  console.log(filePath);
+  console.log("compiler", filePath);
   try {
-    const output = await executeCode(filePath);
+    const output = await executeCode(filePath, input);
     res.json({ output });
   } catch (err) {
     res.json({ output: err });
