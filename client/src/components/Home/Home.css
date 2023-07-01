@@ -35,14 +35,13 @@
     box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.05);
 } */
 
-.Home-Right h2,
-h1 {
+.Home-h2 {
     text-align: center;
     padding: 10px 0;
     border-bottom: 1px solid silver;
 }
 
-.Home-Right form {
+.Home-form {
     padding: 0 40px;
 }
 

@@ -3,11 +3,15 @@ import GoogleLogin from "../authProviders/GoogleLogin";
 import "./Home.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-const Home = ({ user, setUser }) => {
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../../redux/user";
+import { setErrorMessage } from "../../redux/errorMessage";
+const Home = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const { errorMessage } = useSelector((state) => state.errorMessage);
   const navigate = useNavigate();
+  const dispatcher = useDispatch();
   useEffect(() => {}, []);
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -24,7 +28,7 @@ const Home = ({ user, setUser }) => {
       );
       if (response.data.success) {
         const { email } = response.data;
-        setUser({ email: email });
+        dispatcher(login({ email: email }));
         localStorage.setItem("user", JSON.stringify({ email: email }));
 
         navigate("/profile");
@@ -32,14 +36,18 @@ const Home = ({ user, setUser }) => {
       }
       setErrorMessage("Try Again !");
     } catch (err) {
-      setErrorMessage(err?.response?.data?.message);
+      dispatcher(setErrorMessage(err?.response?.data?.message));
     }
   };
   return (
     <div className="Home">
       <div className="Home-Right">
-        <form method="" onSubmit={(e) => e.preventDefault()}>
-          <h2>Login</h2>
+        <form
+          className="Home-form"
+          method=""
+          onSubmit={(e) => e.preventDefault()}
+        >
+          <h2 className="Home-h2 ">Login</h2>
           {errorMessage && (
             <div className="Home-txt_field" style={{ color: "red" }}>
               {errorMessage}
@@ -71,7 +79,6 @@ const Home = ({ user, setUser }) => {
             <span></span>
             <label>Password</label>
           </div>
-          {/* <div className="Home-pass">Forgot Password?</div> */}
           <input
             className="Home-form-submit-input"
             type="submit"
@@ -82,13 +89,7 @@ const Home = ({ user, setUser }) => {
           />
           <div className="Home-google-button">
             <div>
-              login/signUp with{" "}
-              <GoogleLogin
-                user={user}
-                setUser={setUser}
-                errorMessage={errorMessage}
-                setErrorMessage={setErrorMessage}
-              />{" "}
+              login/signUp with <GoogleLogin />{" "}
             </div>
           </div>
 

@@ -1,7 +1,11 @@
 import mongoose from "mongoose";
 
 const problemSchema = new mongoose.Schema({
-  title: String, // unique
+  id: {
+    type: String,
+    unique: true,
+  },
+  title: String,
   description: String,
 
   constraints: String,
@@ -10,14 +14,15 @@ const problemSchema = new mongoose.Schema({
   sampleOutput: String,
   explanation: String,
   difficulty: String,
-  tags: [String],
 
   testcases: [String],
   answers: [String],
-
   createdAt: Date,
 });
 
-const Problem = mongoose.model("Problem", problemSchema);
-
-export default Problem;
+const Problems = mongoose.model("Problems", problemSchema);
+problemSchema.pre("save", function (next) {
+  this.createdAt = Date.now();
+  next();
+});
+export default Problems;

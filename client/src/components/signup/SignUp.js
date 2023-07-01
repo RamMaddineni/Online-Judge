@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import jwt from "jwt-decode";
 import "./SignUp.css";
 
-function SignUp({ user }) {
+function SignUp() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -51,8 +51,8 @@ function SignUp({ user }) {
   return (
     <div className="SignUp-background">
       <div className="SignUp">
-        <form method="post">
-          <h2>Sign Up</h2>
+        <form className="SignUp-form" method="post">
+          <h2 className="SignUp-h2">Sign Up</h2>
           {errorMessage && (
             <div className="SignUp-txt_field" style={{ color: "red" }}>
               {errorMessage}

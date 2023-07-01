@@ -3,14 +3,16 @@ import Prism from "prismjs";
 import "prismjs/themes/prism.css";
 import "./CodeEditor.css";
 import axios from "axios";
-import { set } from "lodash";
+import { useNavigate } from "react-router-dom";
 function CodeEditor() {
   const [code, setCode] = useState("");
   const [language, setLanguage] = useState("javascript");
+  const [output, setOutput] = useState("");
   const [input, setInput] = useState("");
+
+  const navigate = useNavigate();
   const textareaRef = useRef(null);
   const inputRef = useRef(null);
-  const [output, setOutput] = useState("");
   function handleCodeChange(event) {
     setCode(event.target.value);
   }
@@ -58,6 +60,14 @@ function CodeEditor() {
 
   return (
     <div className="code-editor">
+      <div
+        onClick={(e) => {
+          e.preventDefault();
+          navigate("/profile");
+        }}
+      >
+        Profile page
+      </div>
       <div className="code-editor-header">
         <select value={language} onChange={handleLanguageChange}>
           <option value="cpp">cpp</option>

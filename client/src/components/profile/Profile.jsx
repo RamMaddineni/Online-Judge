@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
-const Profile = ({ user, setUser }) => {
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "../../redux/user";
+const Profile = () => {
+  const { user } = useSelector((state) => state.user);
+  const dispatcher = useDispatch();
   console.log("user", user);
   const [profile, setProfile] = useState();
-  const [errorMessage, setErrorMessage] = useState();
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -25,10 +27,9 @@ const Profile = ({ user, setUser }) => {
 
         setProfile(response.data?.profile);
       } catch (error) {
-        if (error.response.USER === false) {
+        if (error?.response?.USER === false) {
           navigate("/");
         }
-        setErrorMessage(error?.response?.data?.message || error.message);
       }
     };
 
@@ -39,11 +40,11 @@ const Profile = ({ user, setUser }) => {
       await axios.get(`http://localhost:3001/api/v1/logout`, {
         withCredentials: true,
       });
-      setUser("");
+      // setUser("");
+      dispatcher(logout());
       localStorage.removeItem("user");
       navigate("/");
     } catch (error) {
-      setErrorMessage(error?.response?.data?.message || error.message);
       navigate("/");
     }
   };
@@ -58,6 +59,14 @@ const Profile = ({ user, setUser }) => {
         }}
       >
         Online Compiler
+      </div>
+      <div
+        onClick={(e) => {
+          e.preventDefault();
+          navigate("/problems");
+        }}
+      >
+        problem page
       </div>
       <div className="profile-logout" onClick={handleLogout}>
         Logout

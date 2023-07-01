@@ -9,6 +9,7 @@ import validateJwt from "../middlware/validateJwt.js";
 import profile from "../controllers/Profile/profile.js";
 import googleLogin from "../controllers/auth/googleLogin.js";
 import compiler from "../controllers/compiler/compiler.js";
+import getProblems from "../controllers/problems/problems-get.js";
 // Routes
 // user should be login to access these routes.
 // i will handle login later.
@@ -32,10 +33,7 @@ router.get("/api/v1/logout", (req, res) => {
 router.post("/api/v1/compiler", validateJwt, compiler);
 
 // 1 HLD
-router.get("/api/v1/problems", validateJwt, (req, res) => {
-  console.log("All Problems Route");
-  res.send("All Problems Route");
-});
+router.get("/api/v1/problems", validateJwt, getProblems);
 
 //  2 HLD
 router.get("/api/v1/problem/:id", validateJwt, (req, res) => {
