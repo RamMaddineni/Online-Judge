@@ -5,15 +5,12 @@ import { v4 as uuidv4 } from "uuid";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const dir = path.join(__dirname, "../codes");
-const inputDir = path.join(__dirname, "../input");
 
 if (!fs.existsSync(dir)) {
   // console.log("Directory not exists");
   fs.mkdirSync(dir, { recursive: true });
 }
-if (!fs.existsSync(inputDir)) {
-  fs.mkdirSync(inputDir, { recursive: true });
-}
+
 const generateFile = async (code, language) => {
   console.log("generateFile ", dir, language);
   const codeDir = path.join(dir, language);

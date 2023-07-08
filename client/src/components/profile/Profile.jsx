@@ -14,7 +14,7 @@ const Profile = () => {
     console.log("user line 12", user);
     const getUser = async () => {
       try {
-        console.log(user.userId, user.email);
+        console.log(user.email);
         const response = await axios.post(
           `http://localhost:3001/api/v1/profile`,
           {
@@ -43,6 +43,7 @@ const Profile = () => {
       // setUser("");
       dispatcher(logout());
       localStorage.removeItem("user");
+      localStorage.removeItem("lastLocation");
       navigate("/");
     } catch (error) {
       navigate("/");

@@ -3,7 +3,6 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { setProblems } from "../../redux/problems";
 import { useSelector, useDispatch } from "react-redux";
-import { setProblem } from "../../redux/problem";
 const Problems = () => {
   const { problems } = useSelector((state) => state.problems);
   const dispatcher = useDispatch();
@@ -22,16 +21,19 @@ const Problems = () => {
       }
     };
     getProblems();
+
+    localStorage.setItem("lastLocation", window.location.pathname);
   }, []);
 
   return (
     <div>
-      <div className="flex justify-around bg-lime-300 p-5 rounded-s">
+      <div className="flex sticky top-0 justify-around bg-lime-300 p-5 rounded-s w-full bg-opacity-90">
         <h1 className="text-3xl text-slate-50">Problems</h1>
         <button
           className="text-slate-50 text-lg bg-lime-500 rounded-lg p-2 px-4 hover:bg-lime-700 shadow-lg"
           onClick={(e) => {
             e.preventDefault();
+            localStorage.removeItem("lastLocation");
             navigate("/profile");
           }}
         >
@@ -39,22 +41,25 @@ const Problems = () => {
         </button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 bg-blue-400">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 bg-[aqua]">
         {problems &&
           problems.map((problem) => {
             return (
               <div
                 key={problem.id}
-                className="flex flex-col bg-[aliceblue] border-2 border-gray-300 rounded-md p-4 m-4 min-h-fit self-start justify-around "
+                className="flex flex-col bg-blue-400  border-2 border-blue-400 shadow-2xl rounded-md p-4 m-4 min-h-fit self-start justify-around "
               >
                 <h2 className="text-lg">problem-ID : {problem.id}</h2>
                 <h2 className="self-center">{problem.title}</h2>
                 <button
-                  className="self-end rounded-lg hover:bg-lime-500 p-1 bg-cyan-500"
+                  className="self-end rounded-lg hover:bg-lime-500 p-1 bg-[#1e3a8a] text-slate-50"
                   onClick={(e) => {
                     e.preventDefault();
                     console.log("clicked", problem._id);
-                    dispatcher(setProblem(problem));
+                    localStorage.setItem(
+                      "currentProblem",
+                      JSON.stringify(problem)
+                    );
                     navigate(`/problem`);
                   }}
                 >

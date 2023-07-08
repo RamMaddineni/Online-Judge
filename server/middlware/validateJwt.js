@@ -20,7 +20,7 @@ const validateJwt = (req, res, next) => {
     //     .json({ success: false, message: "Invalid User", USER: false });
     //   return;
     // }
-
+    req.email = decoded.email;
     next();
   });
 };

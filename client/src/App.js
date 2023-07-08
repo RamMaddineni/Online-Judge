@@ -1,10 +1,5 @@
 import { useEffect } from "react";
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  Navigate,
-} from "react-router-dom";
+import { Route, Routes, Navigate, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import "./App.css";
 import CodeEditor from "./components/CodeEditor/CodeEditor";
@@ -18,29 +13,32 @@ import { login } from "./redux/user";
 function App() {
   const { user } = useSelector((state) => state.user);
   const dispatcher = useDispatch();
+  const navigate = useNavigate();
   useEffect(() => {
     dispatcher(login(JSON.parse(localStorage.getItem("user"))));
+    const lastLocation = localStorage.getItem("lastLocation");
+    if (lastLocation) {
+      navigate(lastLocation);
+    }
   }, []);
   return (
-    <Router>
-      <Routes>
-        {!user && <Route path="/" element={<Home />}></Route>}
-        {!user && <Route path="/register" element={<SignUp />}></Route>}
-        {user && <Route path="/profile" element={<Profile />}></Route>}
+    <Routes>
+      {!user && <Route path="/" element={<Home />}></Route>}
+      {!user && <Route path="/register" element={<SignUp />}></Route>}
+      {user && <Route path="/profile" element={<Profile />}></Route>}
 
-        {user && (
-          <Route path="/compiler" element={<CodeEditor>Problems</CodeEditor>} />
-        )}
-        {user && <Route path="/problems" element={<Problems />} />}
-        {user && <Route path="/problem" element={<Problem />} />}
+      {user && (
+        <Route path="/compiler" element={<CodeEditor>Problems</CodeEditor>} />
+      )}
+      {user && <Route path="/problems" element={<Problems />} />}
+      {user && <Route path="/problem" element={<Problem />} />}
 
-        {user && (
-          <Route path="*" element={<Navigate to="/profile"></Navigate>}></Route>
-        )}
+      {user && (
+        <Route path="*" element={<Navigate to="/profile"></Navigate>}></Route>
+      )}
 
-        <Route path="*" element={<Navigate to="/"></Navigate>}></Route>
-      </Routes>
-    </Router>
+      <Route path="*" element={<Navigate to="/"></Navigate>}></Route>
+    </Routes>
   );
 }
 

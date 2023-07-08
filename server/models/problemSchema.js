@@ -10,8 +10,8 @@ const problemSchema = new mongoose.Schema({
 
   constraints: String,
 
-  sampleInput: String,
-  sampleOutput: String,
+  sampleInput: [String],
+  sampleOutput: [String],
   explanation: String,
   difficulty: String,
 

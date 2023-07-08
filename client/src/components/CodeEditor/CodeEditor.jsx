@@ -57,7 +57,9 @@ function CodeEditor() {
       Prism.highlightElement(textareaRef.current);
     }
   }, [code, language]);
-
+  useEffect(() => {
+    localStorage.setItem("lastLocation", window.location.pathname);
+  }, []);
   return (
     <div className="code-editor">
       <div

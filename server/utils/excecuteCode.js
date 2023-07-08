@@ -87,7 +87,7 @@ const executeCode = async (filePath, input) => {
   console.log(command[extension.split(".")[1]], "executeCode");
   console.log(dockerCommand[extension.split(".")[1]], "executeCode");
   return new Promise((resolve, reject) => {
-    const process = spawn("sh", dockerCommand[extension.split(".")[1]]);
+    const process = spawn("cmd", command[extension.split(".")[1]]);
     let output = "";
     process.stdin.write(input);
     process.stdin.end();
