@@ -22,10 +22,29 @@ export default function Problem() {
     document.exitFullscreen();
   };
 
-  const verdict = {
-    Accepted: <span className="text-green-500">Accepted</span>,
-    Judging: <span className="text-yellow-500">Judging</span>,
-    Wrong_Answer: <span className="text-red-500">Wrong Answer</span>,
+  const verdict = (info = "") => {
+    let str;
+    if (info.verdict) str = "Accepted";
+    else if (!info.verdict && info.compilation) str = "Wrong_Answer";
+    else if (!info.verdict && !info.compilation) str = "compilation_error";
+
+    if (str === "Accepted") {
+      return <div className="text-green-500">Accepted</div>;
+    } else if (str === "Wrong_Answer")
+      return (
+        <div className="text-red-500">
+          Wrong Answer on testcase : {info.testcase}
+          <br />
+          input : {info.input}
+          <br />
+          output: {info.output}
+          <br />
+          expectedOutput= {info.expectedOutput}
+        </div>
+      );
+    else if (str === "compilation_error") {
+      return <div className="text-red-800 w-44">{info.message}</div>;
+    }
   };
   const navigate = useNavigate();
   useEffect(() => {
@@ -69,7 +88,7 @@ export default function Problem() {
               </h1>
               <img
                 src={expandImage}
-                className="w-7 h-7 p-1 m-2 bg-emerald-200 rounded"
+                className="w-7 h-7 p-1 m-2 bg-emerald-200 rounded hover:cursor-pointer hover:bg-emerald-500"
                 alt=""
                 onClick={() => {
                   if (descRef.current === document.fullscreenElement) {
@@ -87,18 +106,9 @@ export default function Problem() {
             className=" flex flex-row justify-between basis-1/5 bg-slate-800 text-slate-50 rounded-md shadow-xl overflow-scroll"
           >
             <div>
-              {!codeError &&
-                codeInfo &&
-                codeInfo.verdict &&
-                verdict["Accepted"]}
-              {!codeError &&
-                codeInfo &&
-                !codeInfo.verdict &&
-                verdict["Wrong_Answer"]}
-              {isCompiling && verdict["Judging"]}
-
-              {codeError && <div> {codeError}</div>}
-              {!codeInfo && !codeError && !isCompiling && (
+              {isCompiling && <span className="text-yellow-500">Judging</span>}
+              {!isCompiling && codeInfo && verdict(codeInfo)}
+              {!codeInfo && !isCompiling && (
                 <div className="text-slate-50">
                   <h1 className="font-semibold text-slate-50">
                     {problem.title} : {problem._id}
@@ -109,7 +119,7 @@ export default function Problem() {
             </div>
             <img
               src={expandImage}
-              className="w-7 h-7 p-1 m-2 bg-emerald-200 rounded"
+              className="w-7 h-7 p-1 m-2 bg-emerald-200 rounded hover:cursor-pointer hover:bg-emerald-500"
               alt=""
               onClick={() => {
                 if (verdictRef.current === document.fullscreenElement) {

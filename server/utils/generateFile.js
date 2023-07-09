@@ -12,7 +12,6 @@ if (!fs.existsSync(dir)) {
 }
 
 const generateFile = async (code, language) => {
-  console.log("generateFile ", dir, language);
   const codeDir = path.join(dir, language);
   if (!fs.existsSync(codeDir)) {
     fs.mkdirSync(codeDir, { recursive: true });

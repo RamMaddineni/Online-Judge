@@ -36,11 +36,11 @@ const codeRunner = async (filePath, input, expectedOutput) => {
     const command = {
       c: {
         pre: `gcc ${filePath} -o ${outputFilePath} `,
-        post: `cd ${outputFileDir} && ./${fileName}.exe`,
+        post: `cd ${outputFileDir} && .\\${fileName}.exe`,
       },
       cpp: {
         pre: ` g++ ${filePath} -o ${outputFilePath} `,
-        post: `cd ${outputFileDir} && ./${fileName}.exe`,
+        post: `cd ${outputFileDir} && .\\${fileName}.exe`,
       },
       java: {
         pre: `javac -d ${outputFileDir} ${filePath} `,
@@ -64,6 +64,7 @@ const codeRunner = async (filePath, input, expectedOutput) => {
     let info = {
       verdict: true,
       success: true,
+      compilation: true,
       message: "All testcases passed",
     };
     let t = input.length;
@@ -82,6 +83,7 @@ const codeRunner = async (filePath, input, expectedOutput) => {
           verdict: false,
           message: "testcase failed",
           success: false,
+          compilation: true,
         };
 
         return info;
@@ -94,6 +96,7 @@ const codeRunner = async (filePath, input, expectedOutput) => {
     info = {
       success: false,
       verdict: false,
+      compilation: false,
       message: err.message,
     };
     err.info = info;

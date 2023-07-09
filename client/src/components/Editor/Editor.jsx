@@ -48,6 +48,9 @@ function Editor() {
   const handleSubmit = async () => {
     try {
       dispatcher(setIsCompiling(true));
+      dispatcher(setCodeError(null));
+      dispatcher(setCodeInfo(null));
+
       const res = await axios.post(
         `http://localhost:3001/api/v1/problem/submit/${problem._id}`,
         {
@@ -61,8 +64,9 @@ function Editor() {
       dispatcher(setCodeInfo(res.data?.info));
       dispatcher(setIsCompiling(false));
     } catch (err) {
-      dispatcher(setCodeError(err?.response.data?.error));
+      dispatcher(setCodeError(err?.response?.data?.error));
       dispatcher(setIsCompiling(false));
+      console.log(err?.response);
     }
   };
 
@@ -93,7 +97,7 @@ function Editor() {
         </button>
         <img
           src={expandImage}
-          className="w-7 h-7 p-1  bg-emerald-200 rounded"
+          className="w-7 h-7 p-1  bg-emerald-200 rounded hover:cursor-pointer hover:bg-emerald-300"
           alt=""
           onClick={() => {
             if (document.fullscreenElement === editorRef.current) {

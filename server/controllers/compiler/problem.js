@@ -10,6 +10,12 @@ const updateDatabase = async (info, filePath, email, id) => {
     const extension = path.extname(filePath);
     const fileName = path.basename(filePath, extension);
     const user = await User.findOne({ email });
+    const isPresent = user.submittedProblems.some(
+      (obj) => obj.problemId === id
+    );
+    const isSolved = user.submittedProblems.some(
+      (obj) => obj.problemId === id && obj.solved === true
+    );
     if (info.verdict) {
       //  submittedCodeId :
       //  language  :
@@ -21,18 +27,18 @@ const updateDatabase = async (info, filePath, email, id) => {
         solved: true,
         problemId: id,
       });
-      user.solvedProblems += 1;
-      const problem = await Problems.findOne({ id });
-      if (problem.difficulty === "easy") {
+      if (!isSolved) user.solvedProblems += 1;
+      const problem = await Problems.findById(id);
+      if (problem.difficulty === "easy" && !isSolved) {
         user.easyCount += 1;
       }
-      if (problem.difficulty === "medium") {
+      if (problem.difficulty === "medium" && !isSolved) {
         user.mediumCount += 1;
       }
-      if (problem.difficulty === "hard") {
+      if (problem.difficulty === "hard" && !isSolved) {
         user.hardCount += 1;
       }
-      user.attemptedProblems += 1;
+      if (!isPresent) user.attemptedProblems += 1;
       await user.save();
     } else if (!info.verdict) {
       user.submittedProblems.push({
@@ -41,7 +47,7 @@ const updateDatabase = async (info, filePath, email, id) => {
         solved: false,
         problemId: id,
       });
-      user.attemptedProblems += 1;
+      if (!isPresent) user.attemptedProblems += 1;
       await user.save();
     }
   } catch (err) {
@@ -52,22 +58,19 @@ const updateDatabase = async (info, filePath, email, id) => {
 const problemCompiler = async (req, res) => {
   let filePath;
   const { id } = req.params;
-  console.log(id);
   try {
     const { code, lang } = req.body;
     filePath = await generateFile(code, lang);
     const problem = await Problems.findById(id);
-    console.log(problem);
-    const info = codeRunner(filePath, problem.testcases, problem.answers);
+    const info = await codeRunner(filePath, problem.testcases, problem.answers);
     updateDatabase(info, filePath, req.email, id);
-    console.log(info);
     res.json({ info: info });
   } catch (err) {
     console.log(err.message, "error in problem.js");
     if (err.info) {
       updateDatabase(err.info, filePath, req.email, id);
     }
-    console.log(err.info || err.message);
+    console.log(err.info || err.message, " error in problem.js");
     res.status(500).json({ error: err.message, info: err.info });
   }
 };

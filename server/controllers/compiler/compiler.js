@@ -4,7 +4,6 @@ const compiler = async (req, res) => {
   const code = req.body.code;
   const lang = req.body.language;
   const input = req.body.input;
-  console.log("lang", lang);
   const filePath = await generateFile(code, lang);
   console.log("compiler", filePath);
   try {

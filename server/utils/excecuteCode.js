@@ -11,7 +11,6 @@ if (!fs.existsSync(outputPath)) {
   fs.mkdirSync(outputPath, { recursive: true });
 }
 const executeCode = async (filePath, input) => {
-  console.log("executeCode", filePath, input);
   const extension = path.extname(filePath);
   const fileName = path.basename(filePath, extension);
   const outputFileDir = path.join(outputPath, extension.split(".")[1]);
@@ -83,9 +82,6 @@ const executeCode = async (filePath, input) => {
     py: ["-c", `python ${filePath}`],
   };
 
-  console.log(extension.split(".")[1]);
-  console.log(command[extension.split(".")[1]], "executeCode");
-  console.log(dockerCommand[extension.split(".")[1]], "executeCode");
   return new Promise((resolve, reject) => {
     const process = spawn("cmd", command[extension.split(".")[1]]);
     let output = "";
@@ -101,7 +97,6 @@ const executeCode = async (filePath, input) => {
       if (code === 0) {
         resolve(output);
       } else {
-        console.log(output, typeof output);
         reject(
           `program ended with exit code ${code}, ${output.error || output}`
         );
