@@ -10,7 +10,7 @@ const Problems = () => {
   useEffect(() => {
     const getProblems = async () => {
       try {
-        const res = await axios.get("http://localhost:3001/api/v1/problems", {
+        const res = await axios.get("/api/v1/problems", {
           withCredentials: true,
         });
         dispatcher(setProblems(res.data));
@@ -24,7 +24,23 @@ const Problems = () => {
 
     localStorage.setItem("lastLocation", window.location.pathname);
   }, []);
-
+  const difficulty = {
+    easy: (
+      <div className="bg-lime-700 rounded-sm text-white text-center flex items-center px-2">
+        Easy
+      </div>
+    ),
+    medium: (
+      <div className="bg-yellow-300 rounded-sm text-white flex items-center px-2">
+        Medium
+      </div>
+    ),
+    hard: (
+      <div className="bg-red-600 rounded-sm text-white flex items-center px-2">
+        Hard
+      </div>
+    ),
+  };
   return (
     <div>
       <div className="flex sticky top-0 justify-around bg-lime-300 p-5 rounded-s w-full bg-opacity-90">
@@ -49,7 +65,10 @@ const Problems = () => {
                 key={problem.id}
                 className="flex flex-col bg-blue-400  border-2 border-blue-400 shadow-2xl rounded-md p-4 m-4 min-h-fit self-start justify-around "
               >
-                <h2 className="text-lg">problem-ID : {problem.id}</h2>
+                <div className="flex justify-between">
+                  <h2 className="text-lg">problem-ID : {problem.id}</h2>
+                  {difficulty[problem.difficulty]}
+                </div>
                 <h2 className="self-center">{problem.title}</h2>
                 <button
                   className="self-end rounded-lg hover:bg-lime-500 p-1 bg-[#1e3a8a] text-slate-50"

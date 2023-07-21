@@ -27,14 +27,11 @@ function SignUp() {
       setErrorMessage("Password length should be atleast 4 characters .");
     }
     try {
-      const response = await axios.post(
-        "http://localhost:3001/api/v1/auth/register",
-        {
-          name,
-          email,
-          password,
-        }
-      );
+      const response = await axios.post("/api/v1/auth/register", {
+        name,
+        email,
+        password,
+      });
       console.log(response.data);
       if (response.data.success) {
         navigate("/");

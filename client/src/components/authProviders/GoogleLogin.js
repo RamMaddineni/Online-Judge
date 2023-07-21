@@ -20,7 +20,7 @@ function GoogleLogin() {
 
     try {
       const response = await axios.post(
-        "http://localhost:3001/api/v1/auth/google/login",
+        "/api/v1/auth/google/login",
         {
           name: userObject.name,
           email: userObject.email,

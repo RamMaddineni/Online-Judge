@@ -17,7 +17,7 @@ const Home = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:3001/api/v1/auth/local/login",
+        "/api/v1/auth/local/login",
         {
           email,
           password,

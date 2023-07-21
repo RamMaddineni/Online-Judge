@@ -52,7 +52,7 @@ function Editor() {
       dispatcher(setCodeInfo(null));
 
       const res = await axios.post(
-        `http://localhost:3001/api/v1/problem/submit/${problem._id}`,
+        `/api/v1/problem/submit/${problem._id}`,
         {
           code,
           lang: language,

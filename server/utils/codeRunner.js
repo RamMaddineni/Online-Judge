@@ -33,7 +33,7 @@ const codeRunner = async (filePath, input, expectedOutput) => {
     if (extension.split(".")[1] === "cpp" || extension.split(".")[1] === "c")
       outputFilePath = path.join(outputFileDir, `${fileName}.exe`);
 
-    const command = {
+    const windowsCommand = {
       c: {
         pre: `gcc ${filePath} -o ${outputFilePath} `,
         post: `cd ${outputFileDir} && .\\${fileName}.exe`,
@@ -41,6 +41,29 @@ const codeRunner = async (filePath, input, expectedOutput) => {
       cpp: {
         pre: ` g++ ${filePath} -o ${outputFilePath} `,
         post: `cd ${outputFileDir} && .\\${fileName}.exe`,
+      },
+      java: {
+        pre: `javac -d ${outputFileDir} ${filePath} `,
+        post: `cd ${outputFileDir} && java ${fileName}`,
+      },
+      js: {
+        pre: ``,
+        post: `node ${filePath} `,
+      },
+      py: {
+        pre: ``,
+        post: `python ${filePath} `,
+      },
+    };
+
+    const dockerCommand = {
+      c: {
+        pre: `gcc ${filePath} -o ${outputFilePath} `,
+        post: `cd ${outputFileDir} && ./${fileName}.exe`,
+      },
+      cpp: {
+        pre: ` g++ ${filePath} -o ${outputFilePath} `,
+        post: `cd ${outputFileDir} && ./${fileName}.exe`,
       },
       java: {
         pre: `javac -d ${outputFileDir} ${filePath} `,
@@ -69,9 +92,10 @@ const codeRunner = async (filePath, input, expectedOutput) => {
     };
     let t = input.length;
     let i = 0;
-    command[lang].pre && execSync(command[lang].pre);
+    ``;
+    dockerCommand[lang].pre && execSync(dockerCommand[lang].pre);
     while (t--) {
-      const output = execSync(command[lang].post, {
+      const output = execSync(dockerCommand[lang].post, {
         input: input[i],
       }).toString();
       if (smoothString(output) !== smoothString(expectedOutput[i])) {

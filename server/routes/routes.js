@@ -11,10 +11,10 @@ import compiler from "../controllers/compiler/compiler.js";
 import getProblems from "../controllers/problems/problems-get.js";
 import problemCompiler from "../controllers/compiler/problem.js";
 
-router.get("/", async (req, res) => {
-  console.log("Home Route");
-  res.send("Home Route");
-});
+// router.get("/", async (req, res) => {
+//   console.log("Home Route");
+//   res.send("Home Route");
+// });
 
 //auth routes
 router.post("/api/v1/auth/register", register);
