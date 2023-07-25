@@ -6,18 +6,22 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../redux/user";
 import { setErrorMessage } from "../../redux/errorMessage";
+
 const Home = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { errorMessage } = useSelector((state) => state.errorMessage);
   const navigate = useNavigate();
   const dispatcher = useDispatch();
-  useEffect(() => {}, []);
+  useEffect(() => {
+    dispatcher(setErrorMessage(""));
+  }, []);
+  const { domain } = useSelector((state) => state.domain);
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "/api/v1/auth/local/login",
+        `${domain}/api/v1/auth/local/login`,
         {
           email,
           password,

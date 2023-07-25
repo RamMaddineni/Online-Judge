@@ -92,8 +92,9 @@ const codeRunner = async (filePath, input, expectedOutput) => {
     };
     let t = input.length;
     let i = 0;
-    ``;
+
     dockerCommand[lang].pre && execSync(dockerCommand[lang].pre);
+    // windowsCommand[lang].pre && execSync(windowsCommand[lang].pre);
     while (t--) {
       const output = execSync(dockerCommand[lang].post, {
         input: input[i],

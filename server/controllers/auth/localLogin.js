@@ -5,23 +5,24 @@ import jwt from "jsonwebtoken";
 dotenv.config();
 const localLogin = async (req, res) => {
   const { email, password } = req.body;
-  // console.log(email, password);
+  console.log(email, password, "local login");
   try {
     const user = await User.find({ email: email });
 
-    // console.log(user, user.length, user[0].password, password);
+    // console.log(user, user.length, user[0].password, password, " localLogin");
     if (user.length && user[0].password === password) {
       // console.log("came here");
       const tokenId = uuidv4();
       const token = jwt.sign(
-        { email: user.email, tokenId: tokenId },
+        { email: user[0].email, tokenId: tokenId },
         process.env.JWT_SECRET,
         { expiresIn: "1d" }
       );
       const cookieOptions = {
-        domain: "localhost",
+        domain: "43.204.24.195",
+        // domain: "localhost",
         path: "/",
-        secure: true,
+        secure: false,
         httpOnly: true,
       };
       res.cookie("token", token, cookieOptions);

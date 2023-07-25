@@ -4,14 +4,14 @@ import "prismjs/themes/prism.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { set } from "lodash";
-
+import { useSelector } from "react-redux";
 function CodeEditor() {
   const [code, setCode] = useState("");
   const [language, setLanguage] = useState("cpp");
   const [output, setOutput] = useState("");
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-
+  const { domain } = useSelector((state) => state.domain);
   const navigate = useNavigate();
   const textareaRef = useRef(null);
   const inputRef = useRef(null);
@@ -30,7 +30,7 @@ function CodeEditor() {
     setOutput("");
     try {
       const response = await axios.post(
-        "/api/v1/compiler",
+        `${domain}/api/v1/compiler`,
         {
           code: code,
           language: language,

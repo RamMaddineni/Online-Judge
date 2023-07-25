@@ -2,17 +2,18 @@ import React, { useRef, useState } from "react";
 import "./Editor.css";
 import expandImage from "../../images/expand.png";
 import axios from "axios";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setCodeInfo } from "../../redux/codeInfo";
 import { setCodeError } from "../../redux/codeError";
 import { setIsCompiling } from "../../redux/isCompiling";
+
 function Editor() {
   const [code, setCode] = useState("");
   const [language, setLanguage] = useState("cpp");
   const dispatcher = useDispatch();
 
   const textAreaRef = useRef(null);
-
+  const { domain } = useSelector((state) => state.domain);
   const lineNumbersRef = useRef(null);
   const editorRef = useRef(null);
   const problem = JSON.parse(localStorage.getItem("currentProblem"));
@@ -52,7 +53,7 @@ function Editor() {
       dispatcher(setCodeInfo(null));
 
       const res = await axios.post(
-        `/api/v1/problem/submit/${problem._id}`,
+        `${domain}/api/v1/problem/submit/${problem._id}`,
         {
           code,
           lang: language,

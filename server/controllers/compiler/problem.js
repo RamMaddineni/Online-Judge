@@ -9,6 +9,7 @@ const updateDatabase = async (info, filePath, email, id) => {
   try {
     const extension = path.extname(filePath);
     const fileName = path.basename(filePath, extension);
+    // console.log(email, "updateDatabase ");
     const user = await User.findOne({ email });
     const isPresent = user.submittedProblems.some(
       (obj) => obj.problemId === id
@@ -59,6 +60,7 @@ const problemCompiler = async (req, res) => {
   let filePath;
   const { id } = req.params;
   try {
+    // console.log(req.body, " problemCompiler");
     const { code, lang } = req.body;
     filePath = await generateFile(code, lang);
     const problem = await Problems.findById(id);

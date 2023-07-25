@@ -6,6 +6,7 @@ import problemReducer from "./problem";
 import codeErrorReducer from "./codeError";
 import codeInfoReducer from "./codeInfo";
 import isCompilingReducer from "./isCompiling";
+import domainReducer from "./domain";
 export default configureStore({
   reducer: {
     user: userReducer,
@@ -15,5 +16,6 @@ export default configureStore({
     codeError: codeErrorReducer,
     codeInfo: codeInfoReducer,
     isCompiling: isCompilingReducer,
+    domain: domainReducer,
   },
 });

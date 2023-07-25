@@ -7,6 +7,7 @@ const validateJwt = (req, res, next) => {
       .json({ success: false, message: "Invalid User", USER: false });
     return;
   }
+  // console.log(req.cookies.token, "token");
   jwt.verify(req.cookies.token, process.env.JWT_SECRET, (err, decoded) => {
     if (err) {
       res
@@ -21,6 +22,7 @@ const validateJwt = (req, res, next) => {
     //   return;
     // }
     req.email = decoded.email;
+    // console.log(req.email, decoded.email, "email");
     next();
   });
 };

@@ -8,15 +8,16 @@ const googleLogin = async (req, res) => {
   try {
     const tokenId = uuidv4();
     const token = jwt.sign(
-      { name, email: email, tokenId: tokenId },
+      { email: email, tokenId: tokenId },
       process.env.JWT_SECRET,
       { expiresIn: "1d" }
     );
 
     const cookieOptions = {
-      domain: "localhost",
+      domain: "43.204.24.195",
+      // domain: "localhost",
       path: "/",
-      secure: true,
+      secure: false,
       httpOnly: true,
     };
     res.cookie("token", token, cookieOptions);

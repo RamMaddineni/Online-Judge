@@ -1,27 +1,34 @@
+//came back fine.
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { setProblems } from "../../redux/problems";
 import { useSelector, useDispatch } from "react-redux";
+import "../utils/custom-scrollbar.css";
 const Problems = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const { problems } = useSelector((state) => state.problems);
   const dispatcher = useDispatch();
   const navigate = useNavigate();
+  const { domain } = useSelector((state) => state.domain);
   useEffect(() => {
     const getProblems = async () => {
       try {
-        const res = await axios.get("/api/v1/problems", {
+        const res = await axios.get(`${domain}/api/v1/problems`, {
           withCredentials: true,
         });
+        console.log(res.data);
         dispatcher(setProblems(res.data));
+        setIsLoading(false);
       } catch (err) {
-        if (err.response.USER === false) {
+        console.log(err.message);
+        if (err?.response?.USER === false) {
           navigate("/");
         }
       }
     };
     getProblems();
-
+    console.log("problems", problems);
     localStorage.setItem("lastLocation", window.location.pathname);
   }, []);
   const difficulty = {
@@ -41,29 +48,136 @@ const Problems = () => {
       </div>
     ),
   };
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedDifficulty, setSelectedDifficulty] = useState("all");
+
+  // Custom filtering logic for advanced search
+  const filteredProblems = problems // Check if isLoading is true and problems is defined
+    ? problems.filter((problem) => {
+        const searchWords = searchTerm.toLowerCase().split(" ");
+        const difficultyMatch =
+          selectedDifficulty === "all" ||
+          problem.difficulty === selectedDifficulty;
+        return (
+          searchWords.every((word) =>
+            problem.title.toLowerCase().includes(word)
+          ) && difficultyMatch
+        );
+      })
+    : [];
+
   return (
-    <div>
-      <div className="flex sticky top-0 justify-around bg-lime-300 p-5 rounded-s w-full bg-opacity-90">
-        <h1 className="text-3xl text-slate-50">Problems</h1>
+    <div className="">
+      <div className="flex md:flex-row flex-col sticky top-0 justify-around bg-teal-300 p-5 rounded-s w-full bg-opacity-90 custom-scrollbar">
+        <h1 className="self-center text-3xl text-white">Problems</h1>
+        <div className=" self-center p-3 basis-1/2">
+          <input
+            type="text"
+            placeholder="Search by problem title"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="border rounded p-2 w-full bg-white"
+          />
+        </div>
+        <div className=" self-center p-3">
+          <div className="flex flex-col">
+            <label htmlFor="difficulty" className="text-white text-sm mb-1">
+              Select difficulty
+            </label>
+            <select
+              id="difficulty"
+              value={selectedDifficulty}
+              onChange={(e) => setSelectedDifficulty(e.target.value)}
+              className="border rounded p-2 bg-white"
+            >
+              <option value="all">Default</option>
+              <option value="easy">Easy</option>
+              <option value="medium">Medium</option>
+              <option value="hard">Hard</option>
+            </select>
+          </div>
+        </div>
+
         <button
-          className="text-slate-50 text-lg bg-lime-500 rounded-lg p-2 px-4 hover:bg-lime-700 shadow-lg"
+          className=" self-center text-white text-lg  bg-teal-500 rounded-lg px-3 hover:bg-teal-700 shadow-lg"
           onClick={(e) => {
             e.preventDefault();
             localStorage.removeItem("lastLocation");
             navigate("/profile");
           }}
         >
-          profile
+          Profile
         </button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 bg-[aqua]">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 bg-teal-100 overflow-visible min-h-screen ">
+        {/* Display problems based on the search results */}
+        {filteredProblems.length === 0 && searchTerm === "" && problems
+          ? problems.map((problem) => (
+              <div
+                key={problem.id}
+                className="flex flex-col bg-white  shadow-2xl rounded-md p-4 m-4 min-h-fit self-start justify-around "
+              >
+                <div className="flex justify-between">
+                  <h2 className="text-lg ">problem-ID : {problem.id}</h2>
+                  {difficulty[problem.difficulty]}
+                </div>
+                <h2 className="self-center ">{problem.title}</h2>
+                <button
+                  className="self-end rounded-lg hover:bg-teal-900 p-1 bg-teal-400 text-slate-50"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    console.log("clicked", problem._id);
+                    localStorage.setItem(
+                      "currentProblem",
+                      JSON.stringify(problem)
+                    );
+                    navigate(`/problem`);
+                  }}
+                >
+                  Open
+                </button>
+              </div>
+            ))
+          : filteredProblems &&
+            filteredProblems.map((problem) => (
+              <div
+                key={problem.id}
+                className="flex flex-col bg-white  shadow-2xl rounded-md p-4 m-4 min-h-fit self-start justify-around "
+              >
+                <div className="flex justify-between">
+                  <h2 className="text-lg">Problem-ID : {problem.id}</h2>
+                  {difficulty[problem.difficulty]}
+                </div>
+                <h2 className="self-center">{problem.title}</h2>
+                <button
+                  className="self-end rounded-sm hover:bg-teal-900 p-1 bg-teal-400 text-slate-50"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    console.log("clicked", problem._id);
+                    localStorage.setItem(
+                      "currentProblem",
+                      JSON.stringify(problem)
+                    );
+                    navigate(`/problem`);
+                  }}
+                >
+                  Open
+                </button>
+              </div>
+            ))}
+
+        {(!filteredProblems || filteredProblems.length === 0) && (
+          <div>No matching problems </div>
+        )}
+      </div>
+      {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 bg-teal-100 overflow-visible min-h-screen">
         {problems &&
           problems.map((problem) => {
             return (
               <div
                 key={problem.id}
-                className="flex flex-col bg-blue-400  border-2 border-blue-400 shadow-2xl rounded-md p-4 m-4 min-h-fit self-start justify-around "
+                className="flex flex-col bg-white  shadow-2xl rounded-md p-4 m-4 min-h-fit self-start justify-around "
               >
                 <div className="flex justify-between">
                   <h2 className="text-lg">problem-ID : {problem.id}</h2>
@@ -71,7 +185,7 @@ const Problems = () => {
                 </div>
                 <h2 className="self-center">{problem.title}</h2>
                 <button
-                  className="self-end rounded-lg hover:bg-lime-500 p-1 bg-[#1e3a8a] text-slate-50"
+                  className="self-end rounded-lg hover:bg-teal-900 p-1 bg-teal-400 text-slate-50"
                   onClick={(e) => {
                     e.preventDefault();
                     console.log("clicked", problem._id);
@@ -88,7 +202,7 @@ const Problems = () => {
             );
           })}
         {!problems && <div>No problems </div>}
-      </div>
+      </div> */}
     </div>
   );
 };

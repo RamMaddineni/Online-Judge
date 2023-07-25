@@ -17,20 +17,20 @@ import problemCompiler from "../controllers/compiler/problem.js";
 // });
 
 //auth routes
-router.post("/api/v1/auth/register", register);
-router.post("/api/v1/auth/local/login", localLogin);
-router.post("/api/v1/auth/google/login", googleLogin);
+router.post("/v1/auth/register", register);
+router.post("/v1/auth/local/login", localLogin);
+router.post("/v1/auth/google/login", googleLogin);
 
-router.post("/api/v1/profile", validateJwt, profile);
-router.get("/api/v1/logout", (req, res) => {
+router.post("/v1/profile", validateJwt, profile);
+router.get("/v1/logout", (req, res) => {
   res.clearCookie("token");
   res.send("logged out");
 });
-router.post("/api/v1/compiler", validateJwt, compiler);
+router.post("/v1/compiler", validateJwt, compiler);
 
 // 1 HLD
-router.get("/api/v1/problems", validateJwt, getProblems);
+router.get("/v1/problems", validateJwt, getProblems);
 
-router.post("/api/v1/problem/submit/:id", validateJwt, problemCompiler);
+router.post("/v1/problem/submit/:id", validateJwt, problemCompiler);
 
 export default router;

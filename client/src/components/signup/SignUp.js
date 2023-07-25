@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import jwt from "jwt-decode";
 import "./SignUp.css";
+import { useSelector } from "react-redux";
 
 function SignUp() {
   const [name, setName] = useState("");
@@ -12,7 +13,7 @@ function SignUp() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
-
+  const { domain } = useSelector((state) => state.domain);
   const handleRegister = async (e) => {
     e.preventDefault();
     if (!name || !email || !password || !confirmPassword) {
@@ -27,7 +28,7 @@ function SignUp() {
       setErrorMessage("Password length should be atleast 4 characters .");
     }
     try {
-      const response = await axios.post("/api/v1/auth/register", {
+      const response = await axios.post(`${domain}/api/v1/auth/register`, {
         name,
         email,
         password,

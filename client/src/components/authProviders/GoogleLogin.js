@@ -6,10 +6,11 @@ import { useDispatch } from "react-redux";
 import { login } from "../../redux/user";
 import jwt_decode from "jwt-decode";
 import { setErrorMessage } from "../../redux/errorMessage";
-
+import { useSelector } from "react-redux";
 function GoogleLogin() {
   const navigate = useNavigate();
   const dispatcher = useDispatch();
+  const { domain } = useSelector((state) => state.domain);
   const handleCallbackResponse = async (response) => {
     console.log("Encode Jwt : ", response.credential);
     let userObject = jwt_decode(response.credential);
@@ -20,7 +21,7 @@ function GoogleLogin() {
 
     try {
       const response = await axios.post(
-        "/api/v1/auth/google/login",
+        `${domain}/api/v1/auth/google/login`,
         {
           name: userObject.name,
           email: userObject.email,
@@ -52,7 +53,7 @@ function GoogleLogin() {
         "495337380519-ji1hsn7bsmjgjd4lln75lhu5lluq2nv4.apps.googleusercontent.com",
       callback: handleCallbackResponse,
     });
-    google.accounts.id.renderButton(
+    google?.accounts?.id.renderButton(
       document.getElementById("google-login-button"),
       { theme: "outline", width: "20%", height: 50 }
     );

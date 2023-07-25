@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Route, Routes, Navigate, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import "./App.css";
-import CodeEditor from "./components/CodeEditor/CodeEditor";
+import CodeEditorUp from "./components/CodeEditor/CodeEditorUp";
 import SignUp from "./components/signup/SignUp";
 import Home from "./components/Home/Home";
 import Profile from "./components/profile/Profile";
@@ -17,7 +17,8 @@ function App() {
   useEffect(() => {
     dispatcher(login(JSON.parse(localStorage.getItem("user"))));
     const lastLocation = localStorage.getItem("lastLocation");
-    if (lastLocation) {
+    const currentProblem = localStorage.getItem("currentProblem");
+    if (lastLocation && currentProblem) {
       navigate(lastLocation);
     }
   }, []);
@@ -28,7 +29,10 @@ function App() {
       {user && <Route path="/profile" element={<Profile />}></Route>}
 
       {user && (
-        <Route path="/compiler" element={<CodeEditor>Problems</CodeEditor>} />
+        <Route
+          path="/compiler"
+          element={<CodeEditorUp>Problems</CodeEditorUp>}
+        />
       )}
       {user && <Route path="/problems" element={<Problems />} />}
       {user && <Route path="/problem" element={<Problem />} />}

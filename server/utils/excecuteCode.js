@@ -83,7 +83,8 @@ const executeCode = async (filePath, input) => {
   };
 
   return new Promise((resolve, reject) => {
-    const process = spawn("cmd", dockerCommand[extension.split(".")[1]]);
+    // const process = spawn("cmd", command[extension.split(".")[1]]);
+    const process = spawn("sh", dockerCommand[extension.split(".")[1]]);
     let output = "";
     process.stdin.write(input);
     process.stdin.end();
