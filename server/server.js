@@ -13,11 +13,8 @@ import {
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 
-// app.use(express.static(path.join(__dirname, "build")));
+app.use(express.static(path.join(__dirname, "build")));
 
-// app.get("/", function (req, res) {
-//   res.sendFile(path.join(__dirname, "build", "index.html"));
-// });
 app.use(cookieParser());
 app.use(
   cors({
@@ -28,9 +25,9 @@ app.use(
 app.use(express.json());
 
 // Serve the React app's index.html for all routes except /api
-// app.get(/^((?!\/api).)*$/, function (req, res) {
-//   res.sendFile(path.join(__dirname, "build", "index.html"));
-// });
+app.get(/^((?!\/api).)*$/, function (req, res) {
+  res.sendFile(path.join(__dirname, "build", "index.html"));
+});
 
 DBConnection();
 
