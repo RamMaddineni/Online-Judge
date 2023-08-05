@@ -133,13 +133,13 @@ export default function Problem() {
         </div>
         <div
           ref={verdictRef}
-          className=" flex flex-row justify-between basis-1/5 bg-teal-600  shadow-xl overflow-scroll no-scrollbar p-3"
+          className=" flex flex-row justify-between basis-1/5 bg-slate-50  shadow-xl overflow-scroll no-scrollbar p-3"
         >
           <div>
             {isCompiling && <span className="text-yellow-200">Judging</span>}
             {!isCompiling && codeInfo && verdict(codeInfo)}
             {!codeInfo && !isCompiling && (
-              <div className=" text-slate-50">
+              <div className=" text-black">
                 <h2>Submit your code to see the verdict</h2>
               </div>
             )}

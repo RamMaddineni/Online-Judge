@@ -118,6 +118,17 @@ function SignUp() {
               handleRegister(e);
             }}
           />
+          <label htmlFor="" className="text-slate-500 p-1">
+            Already Registered ?
+          </label>
+          <input
+            className="SignUp-form-submit-input"
+            type="submit"
+            value="Login"
+            onClick={(e) => {
+              navigate("/");
+            }}
+          />
         </form>
       </div>
     </div>

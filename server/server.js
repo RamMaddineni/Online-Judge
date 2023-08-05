@@ -14,7 +14,6 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 
 app.use(express.static(path.join(__dirname, "build")));
-
 app.use(cookieParser());
 app.use(
   cors({

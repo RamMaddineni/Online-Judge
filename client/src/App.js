@@ -15,11 +15,22 @@ function App() {
   const dispatcher = useDispatch();
   const navigate = useNavigate();
   useEffect(() => {
-    dispatcher(login(JSON.parse(localStorage.getItem("user"))));
-    const lastLocation = localStorage.getItem("lastLocation");
-    const currentProblem = localStorage.getItem("currentProblem");
-    if (lastLocation && currentProblem) {
-      navigate(lastLocation);
+    const lastLogin = localStorage.getItem("lastLogin");
+
+    if (lastLogin) {
+      const time = Date.now() - lastLogin;
+      if (time > 1000 * 60 * 60 * 30) {
+        localStorage.removeItem("user");
+        localStorage.removeItem("lastLogin");
+        localStorage.removeItem("lastLocation");
+      } else {
+        const lastLocation = localStorage.getItem("lastLocation");
+        const currentProblem = localStorage.getItem("currentProblem");
+        dispatcher(login(JSON.parse(localStorage.getItem("user"))));
+        if (lastLocation && currentProblem) {
+          navigate(lastLocation);
+        }
+      }
     }
   }, []);
   return (

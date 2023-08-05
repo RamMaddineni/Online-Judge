@@ -16,11 +16,11 @@ const localLogin = async (req, res) => {
       const token = jwt.sign(
         { email: user[0].email, tokenId: tokenId },
         process.env.JWT_SECRET,
-        { expiresIn: "1d" }
+        { expiresIn: "2d" }
       );
       const cookieOptions = {
-        domain: "43.204.24.195",
         // domain: "localhost",
+        domain: "3.110.94.151",
         path: "/",
         secure: false,
         httpOnly: true,

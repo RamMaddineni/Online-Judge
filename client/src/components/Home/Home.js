@@ -35,7 +35,9 @@ const Home = () => {
         dispatcher(login({ email: email }));
         localStorage.setItem("user", JSON.stringify({ email: email }));
 
+        localStorage.setItem("lastLogin", Date.now());
         navigate("/profile");
+
         return;
       }
       setErrorMessage("Try Again !");
@@ -91,11 +93,11 @@ const Home = () => {
               handleLogin(e);
             }}
           />
-          <div className="Home-google-button">
+          {/* <div className="Home-google-button">
             <div>
               login/signUp with <GoogleLogin />{" "}
             </div>
-          </div>
+          </div> */}
 
           <div className="Home-signup_link">
             Not a member?{" "}
